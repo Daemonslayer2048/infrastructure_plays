@@ -1,0 +1,8 @@
+host:
+  hostname: matrix
+  public_domain: null.com
+
+psql:
+  application_user: synapse
+  application_password: apassword!
+  application_database: synapse

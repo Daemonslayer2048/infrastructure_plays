@@ -1,0 +1,4 @@
+- name: Enable SELinux
+  ansible.posix.selinux:
+    policy: "{{ selinux.policy }}"
+    state: "{{ selinux.state }}"

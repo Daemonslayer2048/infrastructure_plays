@@ -1,0 +1,3 @@
+matrix:
+  user: matrix
+  user_home: /srv/matrix

@@ -1,0 +1,16 @@
+- name: Install Httpd
+  ansible.builtin.dnf:
+    state: present
+    name:
+    - httpd
+
+- name: Remove Default site
+  ansible.builtin.file:
+    path: /etc/httpd/conf.d/welcome.conf
+    state: absent
+
+- name: Enable HTTPd Service
+  ansible.builtin.service:
+    name: httpd
+    state: started
+    enabled: yes

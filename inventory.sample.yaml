@@ -1,0 +1,11 @@
+all:
+  children:
+    Caddy:
+      hosts:
+        10.0.0.200:
+    HomeAssistant:
+      hosts:
+        10.0.0.203:
+    Matrix:
+      hosts:
+        10.0.0.205:

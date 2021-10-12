@@ -1,0 +1,6 @@
+mysql:
+  encoding: utf8mb4
+  root_password: apassword!
+  application_database: homeassistant
+  application_user: hass
+  application_password: apassword!

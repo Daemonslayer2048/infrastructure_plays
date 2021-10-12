@@ -1,0 +1,35 @@
+- name: Install Caddy
+  hosts: Caddy
+  gather_facts: true
+  roles:
+    - Common
+    - Caddy
+  tags:
+    - Caddy
+
+- name: Install HomeAssistant
+  hosts: HomeAssistant
+  gather_facts: true
+  roles:
+    - Common
+    - HomeAssistant
+  tags:
+    - HomeAssistant
+
+- name: Install NextCloud
+  hosts: NextCloud
+  gather_facts: true
+  roles:
+    - Common
+    - NextCloud
+  tags:
+    - NextCloud
+
+- name: Install Matrix
+  hosts: Matrix
+  gather_facts: true
+  roles:
+    - Common
+    - Matrix
+  tags:
+    - Matrix
