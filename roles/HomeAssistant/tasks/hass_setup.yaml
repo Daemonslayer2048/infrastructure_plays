@@ -1,28 +1,28 @@
 - name: Create HASS User
   ansible.builtin.user:
-    name: hass
+    name: "{{ hass_user }}"
     comment: Homeassistant Service User
-    home: "{{ homeassistant.user_home }}"
+    home: "{{ hass_user_home }}"
     system: yes
     shell: /sbin/nologin
 
 - name: Check if python39 venv exists
   stat:
-    path: "{{ homeassistant.user_home }}/env"
+    path: "{{ hass_user_home }}/env"
   register: hass_pip_env
 
 - name: Manually create the initial virtualenv
-  become_user: hass
+  become_user: "{{ hass_user }}"
   become: true
   command:
-    chdir: "{{ homeassistant.user_home }}"
+    chdir: "{{ hass_user_home }}"
     cmd: /usr/bin/python3.9 -m venv env
-    creates: "{{ homeassistant.user_home }}/env"
+    creates: "{{ hass_user_home }}/env"
   when: not hass_pip_env.stat.exists
 
 - name: Install Homeassistant PIP Deps
   ansible.builtin.pip:
-    virtualenv: "{{ homeassistant.user_home }}/env"
+    virtualenv: "{{ hass_user_home }}/env"
     virtualenv_python: /usr/bin/python3.9
     name:
       - wheel
@@ -38,13 +38,13 @@
 
 - name: Enable Homeassistant Service
   ansible.builtin.service:
-    name: hass
+    name: "{{ hass_user }}"
     state: started
     enabled: yes
 
 - name: Place HASS Config on FS
   ansible.builtin.template:
     src: ./templates/hass_config.j2
-    dest: "{{ homeassistant.user_home }}/.homeassistant/configuration.yaml"
+    dest: "{{ hass_user_home }}/.homeassistant/configuration.yaml"
   notify:
     - Restart HomeAssistant

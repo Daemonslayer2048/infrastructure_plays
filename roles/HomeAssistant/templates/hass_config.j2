@@ -13,7 +13,7 @@ http:
 
 recorder:
   purge_keep_days: 60
-  db_url: "mysql://{{ mysql.application_user }}:{{ mysql.application_password }}@127.0.0.1/{{ mysql.application_database }}?charset=utf8mb4"
+  db_url: "mysql://{{ mysql_application_user }}:{{ mysql_application_password }}@127.0.0.1/{{ mysql_application_database }}?charset=utf8mb4"
 
 group: !include groups.yaml
 automation: !include automations.yaml

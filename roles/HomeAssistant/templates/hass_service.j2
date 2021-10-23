@@ -4,9 +4,9 @@ After=network-online.target mariadb.service
 
 [Service]
 Type=simple
-User=hass
-WorkingDirectory=/srv/homeassistant/
-ExecStart=/srv/homeassistant/env/bin/hass
+User={{ hass_user }}
+WorkingDirectory={{ hass_user_home }}
+ExecStart={{ hass_user_home }}/env/bin/hass
 
 [Install]
 WantedBy=multi-user.target

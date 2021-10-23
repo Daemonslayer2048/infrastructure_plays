@@ -17,3 +17,9 @@
 
 - name: Install ZSH
   include: oh-my-zsh.yaml
+  when: install_zsh is true
+
+- name: Set Timezone
+  community.general.timezone:
+    name: "{{ timezone }}"
+  when: timezone is defined

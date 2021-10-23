@@ -1,14 +1,14 @@
-host:
-  hostname: hass
-  public_domain: null.com
+# Host Section
+host_name: hass
+host_public_domain: null.com
 
-homeassistant:
-  user: hass
-  user_home: /srv/homeassistant
+# HomeAssistant Section
+hass_user: hass
+hass_user_home: /srv/homeassistant
 
+# MySQL Section
 # Please do not keep this. This is intended to show values needed.
-mysql:
-  root_password: Password1!
-  application_database: homeassistant
-  application_user: hass
-  application_password: Password1!
+mysql_root_password: Password1!
+mysql_application_database: homeassistant
+mysql_application_user: hass
+mysql_application_password: Password1!

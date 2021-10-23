@@ -36,7 +36,7 @@
   community.mysql.mysql_user:
     name: root
     host: "{{ item }}"
-    password: "{{ mysql.root_password }}"
+    password: "{{ mysql_root_password }}"
   with_items:
     - 127.0.0.1
     - ::1
@@ -46,19 +46,19 @@
 - name: Create Application Database
   community.mysql.mysql_db:
     login_user: root
-    login_password: "{{ mysql.root_password }}"
-    encoding: "{{ mysql.encoding | default(\"\") }}"
+    login_password: "{{ mysql_root_password }}"
+    encoding: "{{ mysql_encoding | default(\"\") }}"
     collation: "{{ mysql.collation | default(\"\") }}"
     name:
-      - "{{ mysql.application_database }}"
+      - "{{ mysql_application_database }}"
     state: present
 
 - name: Create Application User
   community.mysql.mysql_user:
     login_user: root
-    login_password: "{{ mysql.root_password }}"
-    name: "{{ mysql.application_user }}"
-    password: "{{ mysql.application_password }}"
-    priv: "{{ mysql.application_database }}.*:ALL"
+    login_password: "{{ mysql_root_password }}"
+    name: "{{ mysql_application_user }}"
+    password: "{{ mysql_application_password }}"
+    priv: "{{ mysql_application_database }}.*:ALL"
     host: 127.0.0.1
     state: present

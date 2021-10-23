@@ -1,28 +1,28 @@
 - name: Create Matrix User
   ansible.builtin.user:
-    name: "{{ matrix.user }}"
+    name: "{{ matrix_user }}"
     comment: Matrix-Synapse Service User
-    home: "{{ matrix.user_home }}"
+    home: "{{ matrix_user_home }}"
     system: yes
     shell: /sbin/nologin
 
 - name: Check if python39 venv exists
   ansible.builtin.stat:
-    path: "{{ matrix.user_home }}/env"
+    path: "{{ matrix_user_home }}/env"
   register: matrix_pip_env
 
 - name: Manually create the initial virtualenv
-  become_user: "{{ matrix.user }}"
+  become_user: "{{ matrix_user }}"
   become: true
   ansible.builtin.command:
-    chdir: "{{ matrix.user_home }}"
+    chdir: "{{ matrix_user_home }}"
     cmd: /usr/bin/python3.9 -m venv env
-    creates: "{{ matrix.user_home }}/env"
+    creates: "{{ matrix_user_home }}/env"
   when: not matrix_pip_env.stat.exists
 
 - name: Install Matrix PIP Deps
   ansible.builtin.pip:
-    virtualenv: "{{ matrix.user_home }}/env"
+    virtualenv: "{{ matrix_user_home }}/env"
     virtualenv_python: /usr/bin/python3.9
     name:
       - matrix-synapse
@@ -35,32 +35,32 @@
     dest: /etc/systemd/system/matrix.service
 
 - name: Manually create the initial virtualenv
-  become_user: "{{ matrix.user }}"
+  become_user: "{{ matrix_user }}"
   become: true
   ansible.builtin.command:
-    chdir: "{{ matrix.user_home }}"
+    chdir: "{{ matrix_user_home }}"
     cmd: /usr/bin/python3.9 -m venv env
-    creates: "{{ matrix.user_home }}/env"
+    creates: "{{ matrix_user_home }}/env"
   when: not matrix_pip_env.stat.exists
 
 - name: Check if matrix config file exists
-  ansible.builtin.shell: "file {{ matrix.user_home }}/homeserver.yaml"
+  ansible.builtin.shell: "file {{ matrix_user_home }}/homeserver.yaml"
   register: config_exists
   ignore_errors: yes
 
 - name: Create initial config file
   ansible.builtin.shell:
-    chdir: "{{ matrix.user_home }}"
+    chdir: "{{ matrix_user_home }}"
     cmd: |
-      {{ matrix.user_home }}/env/bin/python3 \
+      {{ matrix_user_home }}/env/bin/python3 \
       -m synapse.app.homeserver \
-      --server-name {{ host.hostname }}.{{ host.public_domain }} \
-      --config-path {{ matrix.user_home }}/homeserver.yaml \
+      --server-name {{ host_name }}.{{ host_public_domain }} \
+      --config-path {{ matrix_user_home }}/homeserver.yaml \
       --generate-config --report-stats=no
 
 - name: Slurp Config File
   ansible.builtin.slurp:
-    path: "{{ matrix.user_home }}/homeserver.yaml"
+    path: "{{ matrix_user_home }}/homeserver.yaml"
   register: matrix_config
 
 - name: Convert Config File to fact
@@ -70,8 +70,8 @@
 - name: Update Config
   vars:
     config:
-      server_name: "{{ host.hostname }}.{{ host.public_domain }}"
-      public_baseurl: "https://{{ host.hostname }}.{{ host.public_domain }}"
+      server_name: "{{ host_name }}.{{ host_public_domain }}"
+      public_baseurl: "https://{{ host_name }}.{{ host_public_domain }}"
       listeners:
         - bind_addresses:
             - "{{ ansible_facts['eth0']['ipv4']['address'] }}"
@@ -87,9 +87,9 @@
       database:
         name: psycopg2
         args:
-          user: "{{ psql.application_user }}"
-          password: "{{ psql.application_password }}"
-          database: "{{ psql.application_database }}"
+          user: "{{ psql_application_user }}"
+          password: "{{ psql_application_password }}"
+          database: "{{ psql_application_database }}"
           host: localhost
           cp_min: 5
           cp_max: 10
@@ -106,7 +106,7 @@
 - name: Re-write Matrix Config File
   ansible.builtin.copy:
     content: "{{ matrix_config | to_yaml }}"
-    dest: "{{ matrix.user_home }}/homeserver.yaml"
+    dest: "{{ matrix_user_home }}/homeserver.yaml"
 
 - name: Enable Matrix Service
   ansible.builtin.service:
