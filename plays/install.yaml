@@ -33,3 +33,12 @@
     - Matrix
   tags:
     - Matrix
+
+- name: Install BitWarden
+  hosts: BitWarden
+  gather_facts: true
+  roles:
+    - Common
+    - BitWarden
+  tags:
+    - BitWarden

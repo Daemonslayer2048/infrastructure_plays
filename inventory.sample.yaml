@@ -4,9 +4,9 @@ all:
       hosts:
         192.168.10.200:
           timezone: America/Alaska
-    NextCloud:
+    BitWarden:
       hosts:
-        192.168.10.207:
+        192.168.10.201:
           timezone: America/Alaska
     HomeAssistant:
       hosts:
@@ -15,4 +15,8 @@ all:
     Matrix:
       hosts:
         192.168.10.205:
+          timezone: America/Alaska
+    NextCloud:
+      hosts:
+        192.168.10.207:
           timezone: America/Alaska
