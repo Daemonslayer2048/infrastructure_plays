@@ -1,0 +1,51 @@
+- name: Create Mumble User
+  ansible.builtin.user:
+    name: "{{ mumble_user }}"
+    comment: Mumble Service User
+    home: "{{ mumble_user_home }}"
+    system: yes
+    shell: /sbin/nologin
+
+- name: Download Mumble
+  become_user: "{{ mumble_user }}"
+  become: true
+  ansible.builtin.get_url:
+    owner: "{{ mumble_user }}"
+    group: "{{ mumble_user }}"
+    mode: 0700
+    url: https://dl.mumble.info/latest/stable/server-linux-x86
+    dest: "/tmp/mumble_server.bz2"
+
+- name: Unpack Mumble Server Zip
+  become_user: "{{ mumble_user }}"
+  become: true
+  ansible.builtin.unarchive:
+    remote_src: yes
+    extra_opts: [--strip-components=1]
+    src: "/tmp/mumble_server.bz2"
+    dest: "{{ mumble_user_home }}"
+
+- name: Create Mumble Log Directory
+  ansible.builtin.file:
+   path: /var/log/mumble
+   state: directory
+   owner: "{{ mumble_user }}"
+   group: "{{ mumble_user }}"
+
+- name: Upload Mumble Logrotate
+  ansible.builtin.template:
+    src: ./templates/logrotate.j2
+    dest: /etc/logrotate.d/mumble
+
+- name: Upload Mumble Service File
+  ansible.builtin.template:
+    src: ./templates/mumble_service.j2
+    dest: /etc/systemd/system/mumble.service
+
+- name: Setup Mumble Config File
+  community.general.ini_file:
+    path: "{{ mumble_user_home }}/murmur.ini"
+    section: null
+    option: "{{ item.key }}"
+    value: "{{ item.value }}"
+  loop: "{{ mumble_settings | dict2items }}"

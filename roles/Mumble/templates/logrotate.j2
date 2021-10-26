@@ -1,0 +1,12 @@
+/var/log/mumble/*log {
+  su {{ mumble_user }} {{ mumble_user }}
+  dateext
+  rotate 4
+  missingok
+  notifempty
+  sharedscripts
+  delaycompress
+  postrotate
+    /bin/systemctl reload mumble.service > /dev/null 2>/dev/null || true
+  endscript
+}

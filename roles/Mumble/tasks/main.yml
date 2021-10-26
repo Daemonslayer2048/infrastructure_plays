@@ -1,0 +1,17 @@
+- name: Ping Mumble
+  ansible.builtin.ping:
+
+- name: Include Firewalld
+  include: firewalld.yaml
+
+- name: Include SELinux
+  include: selinux.yaml
+
+- name: Setup Mumble
+  include: mumble_setup.yaml
+
+- name: Enable Mumble
+  ansible.builtin.service:
+    name: mumble
+    state: started
+    enabled: yes

@@ -1,0 +1,21 @@
+roles:
+  - name: BitWarden
+    src: https://github.com/Daemonslayer2048/ansible-bitwarden-role.git
+
+  - name: Caddy
+    src: https://github.com/Daemonslayer2048/ansible-caddy-role.git
+
+  - name: Common
+    src: https://github.com/Daemonslayer2048/ansible-common-role.git
+
+  - name: HomeAssistant
+    src: https://github.com/Daemonslayer2048/ansible-homeassistant-role.git
+
+  - name: Matrix
+    src: https://github.com/Daemonslayer2048/ansible-matrix-role.git
+
+  - name: Mumble
+    src: https://github.com/Daemonslayer2048/ansible-mumble-role.git
+
+  - name: NextCloud
+    src: https://github.com/Daemonslayer2048/ansible-nextcloud-role.git

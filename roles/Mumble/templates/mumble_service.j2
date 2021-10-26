@@ -1,0 +1,14 @@
+[Unit]
+Description=Mumble Server (Murmur)
+Requires=network-online.target
+After=network-online.target mariadb.service time-sync.target
+
+[Service]
+User={{ mumble_user }}
+Type=forking
+ExecStart={{ mumble_user_home }}/murmur.x86 -ini {{ mumble_user_home }}/murmur.ini
+PIDFile={{ mumble_user_home }}/mumble.pid
+ExecReload=/bin/kill -s HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target

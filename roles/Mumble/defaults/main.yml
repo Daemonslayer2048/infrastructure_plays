@@ -1,0 +1,18 @@
+# Host Section
+host_name: mumble
+host_public_domain: null.com
+
+# Mumble Section
+mumble_user: mumble
+mumble_user_home: /srv/mumble
+# Settings
+mumble_settings:
+  database: /srv/mumble/mumble.sqlite
+  logfile: /var/log/mumble/mumble.log
+  pidfile: /srv/mumble/mumble.pid
+  welcometext: "<br />Welcome to this server running <b>Murmur</b>.<br />Enjoy your stay!<br />"
+  port: 64738
+  serverpassword:
+  bandwidth: 72000
+  users: 100
+  allowping: true

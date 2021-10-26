@@ -1,0 +1,11 @@
+module mumble_selinux 0.0.1;
+
+require {
+  type init_t, var_t;
+  class file { map create execute execute_no_trans lock open read unlink write };
+  class process { execmem execstack };
+}
+
+#============= init_t ==============
+allow init_t self:process { execmem execstack };
+allow init_t var_t:file { map create execute execute_no_trans lock open read unlink write };

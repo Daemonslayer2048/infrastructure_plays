@@ -1,0 +1,12 @@
+- name: Allow Mumble Traffic Through Firewalld
+  ansible.posix.firewalld:
+    rich_rule: rule family="ipv4" port port="64738" protocol="{{ item }}" accept
+    zone: public
+    permanent: yes
+    immediate: yes
+    state: enabled
+  with_items:
+    - "tcp"
+    - "udp"
+  notify:
+    - Restart Firewalld

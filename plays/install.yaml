@@ -42,3 +42,12 @@
     - BitWarden
   tags:
     - BitWarden
+
+- name: Install Mumble
+  hosts: Mumble
+  gather_facts: true
+  roles:
+    - Common
+    - Mumble
+  tags:
+    - Mumble
